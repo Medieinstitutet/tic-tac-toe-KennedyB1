@@ -5,6 +5,7 @@ import UserLogin from './components/UserLogin.vue';
 
 <template>
   <UserLogin />
+  <HelloWorld />
   <p></p>
 </template>
 

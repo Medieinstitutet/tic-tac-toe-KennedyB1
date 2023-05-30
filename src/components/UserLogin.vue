@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue';
+import { Username } from '../models/Username';
 
 const names = ref<string[]>([]);
 
+onMounted(() => {
+  names.value = Username.names;
+});
 const handlePlayer1Input = (e: Event) => {
   const inputElement = e.target as HTMLInputElement;
   const name = capitalizeFirstLetter(inputElement.value);
@@ -26,7 +30,7 @@ const updateNames = (index: number, name: string) => {
 const startGame = () => {
   console.log("Player 1 Name:", names.value[0]);
   console.log("Player 2 Name:", names.value[1]);
-  console.log(names.value)
+ // console.log(Username.names)
 }
 </script>
 
