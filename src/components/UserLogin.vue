@@ -1,53 +1,35 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { Username } from '../models/Username';
-import HelloWorld from './HelloWorld.vue'
+import GameBoard from './GameBoard.vue';
 
 const names = ref<string[]>([]);
 
 onMounted(() => {
   names.value = Username.names;
 });
-const handlePlayer1Input = (e: Event) => {
-  const inputElement = e.target as HTMLInputElement;
-  const name = capitalizeFirstLetter(inputElement.value);
-  updateNames(0, name);
-}
 
-const handlePlayer2Input = (e: Event) => {
-  const inputElement = e.target as HTMLInputElement;
-  const name = capitalizeFirstLetter(inputElement.value);
-  updateNames(1, name);
-}
-
-const capitalizeFirstLetter = (name: string): string => {
-  return name.charAt(0).toUpperCase() + name.slice(1);
-}
-
-const updateNames = (index: number, name: string) => {
-  names.value[index] = name;
-}
+const gameStarted = ref(false);
 
 const startGame = () => {
   console.log("Player 1 Name:", names.value[0]);
   console.log("Player 2 Name:", names.value[1]);
- // console.log(Username.names)
- gameStarted.value = true;
+  gameStarted.value = true;
 }
-const gameStarted = ref(false);
 </script>
 
 <template>
-  <form @submit.prevent="startGame" class="centered-form">
-    <input type="text" id="player1" :value="names[0]" @input="handlePlayer1Input" placeholder="Player 1 Name" required>
+  <div v-if="!gameStarted">
+    <form @submit.prevent="startGame" class="centered-form">
+      <input type="text" id="player1" v-model="names[0]" placeholder="Player 1 Name" required>
+      <input type="text" id="player2" v-model="names[1]" placeholder="Player 2 Name" required>
+      <button type="submit">Start Game</button>
+    </form>
+  </div>
 
-    <input type="text" id="player2" :value="names[1]" @input="handlePlayer2Input" placeholder="Player 2 Name" required>
-
-    <button type="submit">Start Game</button>
-  </form>
-  <div v-if="gameStarted">
-     <HelloWorld />
-    </div>
+  <div v-else>
+    <GameBoard />
+  </div>
 </template>
 
 <style scoped>
