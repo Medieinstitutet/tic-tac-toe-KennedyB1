@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { Username } from '../models/Username';
+import HelloWorld from './HelloWorld.vue'
 
 const names = ref<string[]>([]);
 
@@ -31,7 +32,9 @@ const startGame = () => {
   console.log("Player 1 Name:", names.value[0]);
   console.log("Player 2 Name:", names.value[1]);
  // console.log(Username.names)
+ gameStarted.value = true;
 }
+const gameStarted = ref(false);
 </script>
 
 <template>
@@ -42,6 +45,9 @@ const startGame = () => {
 
     <button type="submit">Start Game</button>
   </form>
+  <div v-if="gameStarted">
+     <HelloWorld />
+    </div>
 </template>
 
 <style scoped>
