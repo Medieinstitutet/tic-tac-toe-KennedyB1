@@ -43,7 +43,7 @@ const checkWinner = (): void => {
 
 const resetGame = (): void => {
   board.value = Array(9).fill('');
-  currentPlayer.value = 'X';
+  currentPlayer.value = winner.value === 'X' ? 'O' : 'X';
   gameOver.value = false;
   winner.value = null;
 };
@@ -62,6 +62,7 @@ const gameStatus = computed(() => {
     return `${Username.names[currentPlayerIndex]}'s turn`;
   }
 });
+
 
 
 
