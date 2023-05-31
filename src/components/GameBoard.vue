@@ -1,22 +1,42 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Username } from '../models/Username';
-import { checkWinner } from '../models/checkWinner';
 
 const board = ref(Array(9).fill(''));
 let currentPlayer = ref('X');
 let gameOver = ref(false);
-let winner = ref<string | null>(null); // Adjusted type annotation
+let winner = ref(null);
 
 const makeMove = (index: number): void => {
   if (board.value[index] === '' && !gameOver.value) {
     board.value[index] = currentPlayer.value;
-    const winningPlayer = checkWinner(board.value);
-    if (winningPlayer) {
+    checkWinner();
+    currentPlayer.value = currentPlayer.value === 'X' ? 'O' : 'X';
+  }
+};
+
+const checkWinner = (): void => {
+  const winningCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for (const combination of winningCombinations) {
+    const [a, b, c] = combination;
+    if (
+      board.value[a] !== '' &&
+      board.value[a] === board.value[b] &&
+      board.value[a] === board.value[c]
+    ) {
       gameOver.value = true;
-      winner.value = winningPlayer;
-    } else {
-      currentPlayer.value = currentPlayer.value === 'X' ? 'O' : 'X';
+      winner.value = board.value[a];
+      break;
     }
   }
 };
@@ -42,6 +62,9 @@ const gameStatus = computed(() => {
     return `${Username.names[currentPlayerIndex]}'s turn`;
   }
 });
+
+
+
 </script>
 
 <template>
