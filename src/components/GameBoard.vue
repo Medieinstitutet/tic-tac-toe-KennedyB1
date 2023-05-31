@@ -1,20 +1,99 @@
 <script setup lang="ts">
-import { ref, onMounted  } from 'vue';
+import { ref, computed } from 'vue';
 import { Username } from '../models/Username';
 
+const board = ref(Array(9).fill(''));
+let currentPlayer = ref('X');
+let gameOver = ref(false);
+let winner = ref(null);
 
+const makeMove = (index: number): void => {
+  if (board.value[index] === '' && !gameOver.value) {
+    board.value[index] = currentPlayer.value;
+    checkWinner();
+    currentPlayer.value = currentPlayer.value === 'X' ? 'O' : 'X';
+  }
+};
 
-const printNames = () => {
-  
-  console.log("Hello World:", Username.names);
-}
+const checkWinner = (): void => {
+  const winningCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
 
-// Call printNames when the component is mounted
-onMounted(printNames);
+  for (const combination of winningCombinations) {
+    const [a, b, c] = combination;
+    if (
+      board.value[a] !== '' &&
+      board.value[a] === board.value[b] &&
+      board.value[a] === board.value[c]
+    ) {
+      gameOver.value = true;
+      winner.value = board.value[a];
+      break;
+    }
+  }
+};
+
+const resetGame = (): void => {
+  board.value = Array(9).fill('');
+  currentPlayer.value = 'X';
+  gameOver.value = false;
+  winner.value = null;
+};
+
+const gameStatus = computed(() => {
+  if (gameOver.value) {
+    return `Player ${winner.value} wins!`;
+  } else if (board.value.every(cell => cell !== '')) {
+    return "Tie!";
+  } else {
+    return `${currentPlayer.value} turn`;
+  }
+});
 </script>
 
 <template>
-  <div>
-    <button @click="printNames">Print Names</button>
+  <p>{{ gameStatus }}</p>
+  <div class="gameboard">
+    <div class="cell" v-for="(cell, index) in board" :key="index" @click="makeMove(index)">
+      <span :class="cell">{{ cell }}</span>
+    </div>
   </div>
+
+  <button @click="resetGame">Reset</button>
 </template>
+
+<style scoped>
+.gameboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #25d8b7;
+  cursor: pointer;
+  font-size: 24px;
+  height: 100px;
+}
+
+.X {
+  color: blue;
+}
+
+.O {
+  color: red;
+}
+</style>
