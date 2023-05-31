@@ -50,13 +50,21 @@ const resetGame = (): void => {
 
 const gameStatus = computed(() => {
   if (gameOver.value) {
-    return `Player ${winner.value} wins!`;
+    if (winner.value === 'X') {
+      return `${Username.names[0]} wins!`;
+    } else if (winner.value === 'O') {
+      return `${Username.names[1]} wins!`;
+    }
   } else if (board.value.every(cell => cell !== '')) {
     return "Tie!";
   } else {
-    return `${currentPlayer.value} turn`;
+    const currentPlayerIndex = currentPlayer.value === 'X' ? 0 : 1;
+    return `${Username.names[currentPlayerIndex]}'s turn`;
   }
 });
+
+
+
 </script>
 
 <template>
