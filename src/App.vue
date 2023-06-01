@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import GameBoard from './components/GameBoard.vue'
 import UserLogin from './components/UserLogin.vue';
 </script>
 
 <template>
   <UserLogin />
-<!--  <HelloWorld />-->
+  <!--  <GameBoard />-->
   <p></p>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

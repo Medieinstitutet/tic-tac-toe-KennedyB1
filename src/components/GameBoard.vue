@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Username } from '../models/Username';
+// import { resetGame } from '../models/resetGame';
 
 const board = ref(Array(9).fill(''));
 let currentPlayer = ref('X');
@@ -99,10 +100,10 @@ const gameStatus = computed(() => {
 }
 
 .X {
-  color: blue;
+  color: white;
 }
 
 .O {
-  color: red;
+  color: black;
 }
 </style>
